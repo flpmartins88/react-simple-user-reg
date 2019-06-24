@@ -20,13 +20,18 @@ class Cadastro extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         this.props.addNameToList(this.state.name);
+        this.setState({name: ''});
+        this.inputName.value = '';
     }
 
     render() {
         return(
             <form onSubmit={this.handleSubmit}>
                 <label htmlFor="nome">Nome</label>
-                <input type="text" id="nome" name="nome" value={this.state.value} onChange={this.handleChange} />
+                <input 
+                    ref={ (ref) => this.inputName=ref }
+                    type="text" id="nome" name="nome" 
+                    value={ this.state.value } onChange={ this.handleChange } />
                 <button type="submit">Add</button>
             </form>
         );
@@ -37,14 +42,24 @@ class Lista extends React.Component {
 
     render() {
         const names = this.props.names;
-        const items = names.map((name, key) => {
-            return(<li key={key}>{name}</li>);
-        })
+        const items = names.map((name, key) => 
+            <li key={key}>
+                <span>{ name }</span>
+                <button onClick={(k) => this.props.removeNameByKey(k)}>x</button>
+            </li>
+        )
 
-        return(<ul>{items}</ul>
-        );
+        return(<ul className="lista">{items}</ul>);
     }
 }
+
+// class ItemList extends React.Component {
+    
+//     render() {
+//         const name = this.props.name
+//     }
+
+// }
 
 class Container extends React.Component {
 
@@ -54,6 +69,14 @@ class Container extends React.Component {
         this.state = {
             names: []
         };
+    }
+
+    removeNameByKey(key) {
+        const names = this.state.names;
+        names.splice(key, 1);
+        this.setState({
+            names: names,
+        })
     }
 
     addNameToList(name) {
@@ -73,7 +96,7 @@ class Container extends React.Component {
                     <Cadastro addNameToList={ (name) => this.addNameToList(name) } />
                 </div>
                 <div className="column">
-                    <Lista names={ names } />
+                    <Lista names={ names } removeNameByKey={ (key) => this.removeNameByKey(key) } />
                 </div>
             </div>
         );

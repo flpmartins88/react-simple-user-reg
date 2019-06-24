@@ -5,3 +5,22 @@
 .container .column {
   flex: 50%;
 }
+
+.lista {
+  list-style-type: none;
+}
+
+.lista > li {
+  border: 1px solid lightgray;
+  padding: 10px 10px;
+  margin: 5px 2px;
+}
+
+.lista > li > button {
+  float: right;
+  text-decoration: none;
+}
+
+.closeMarker {
+  right: 20px;
+}
